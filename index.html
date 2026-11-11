@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1635a8">
+  <meta name="description" content="Material Master — ứng dụng ERP đào tạo quản lý dữ liệu chủ vật tư qua Google Sheets và Apps Script.">
+  <meta name="color-scheme" content="light">
+  <title>Material Master | Epsilon.Blue Soft</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="apple-touch-icon" sizes="152x152" href="./icon-152.png">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./assets/css/styles.css">
+  <script src="./assets/js/barcode.js" defer></script>
+  <script src="./assets/js/cloud-bridge.js" defer></script>
+  <script src="./assets/js/material-rules.js" defer></script>
+  <script src="./assets/js/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#mainContent">Bỏ qua điều hướng</a>
+  <header class="site-header">
+    <div class="topbar content-width">
+      <a href="#dashboard" class="brand" id="brandLink" aria-label="Material Master - Tổng quan">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        <span class="brand-name"><strong>Epsilon<span class="brand-dot">.</span>Blue</strong><span class="brand-suffix">SOFT <span class="brand-separator">/</span> MATERIAL MASTER</span></span>
+      </a>
+      <div class="topbar-right">
+        <span id="accountDisplay" class="account-display">Đào tạo • Không đăng nhập</span>
+        <button type="button" class="button button-outline button-small" id="logoutButton" hidden>Đăng xuất</button>
+        <span class="environment-tag"><span class="live-pulse"></span> ERP TRAINING <span class="desktop-only">· CLOUD MASTER DATA</span></span>
+        <button class="button button-primary button-small header-create" type="button" data-navigate="editor"><svg class="icon"><use href="#i-plus"></use></svg><span>Tạo mã mới</span></button>
+      </div>
+    </div>
+    <nav class="navigation content-width" aria-label="Điều hướng chương trình">
+      <button class="nav-item is-active" type="button" data-navigate="dashboard" aria-current="page"><svg class="icon"><use href="#i-layout"></use></svg> Tổng quan</button>
+      <button class="nav-item" type="button" data-navigate="catalog"><svg class="icon"><use href="#i-list"></use></svg> Danh mục vật tư</button>
+      <button class="nav-item" type="button" data-navigate="editor"><svg class="icon"><use href="#i-plus-square"></use></svg> Tạo mã vật tư</button>
+      <button class="nav-item" type="button" data-navigate="data"><svg class="icon"><use href="#i-database"></use></svg> Quản trị dữ liệu</button>
+      <button class="nav-item" type="button" data-navigate="guide"><svg class="icon"><use href="#i-book"></use></svg> Hướng dẫn ERP</button>
+    </nav>
+  </header>
+
+  <main id="mainContent" class="content-width" tabindex="-1">
+    <div id="errorNotice" class="notice notice-error" role="alert" hidden></div>
+    <section class="page" data-page="dashboard" id="dashboard" aria-labelledby="dashboardHeading">
+      <div class="hero">
+        <img class="hero-image" src="./assets/images/material-master-banner.webp" alt="Minh họa dữ liệu chủ vật tư, thép, cao su, tấm trượt và bu lông" fetchpriority="high">
+        <div class="hero-vignette"></div>
+        <div class="hero-content">
+          <div class="hero-kicker"><span class="kicker-line"></span> MASTER DATA MANAGEMENT · ERP STYLE</div>
+          <h1 id="dashboardHeading">Material <span>Master</span></h1>
+          <p>Chuẩn hóa mã vật tư.<br>Thống nhất dữ liệu. Kết nối nghiệp vụ.</p>
+          <div class="hero-actions">
+            <button type="button" class="button button-accent" data-navigate="catalog">Khám phá danh mục <svg class="icon"><use href="#i-arrow"></use></svg></button>
+            <button type="button" class="button button-ghost-light" data-navigate="editor"><svg class="icon"><use href="#i-plus"></use></svg> Tạo mã mới</button>
+          </div>
+        </div>
+        <span class="hero-corner-label">MATERIAL MASTER · TRAINING EDITION</span>
+      </div>
+      <div class="intro-band">
+        <div class="intro-band-icon"><svg class="icon"><use href="#i-shield"></use></svg></div>
+        <div><strong>Dữ liệu chủ vật tư, không phải phần mềm tồn kho</strong><p>Danh mục mã được sử dụng làm dữ liệu tham chiếu cho Mua hàng · Sản xuất · Kho · Chất lượng. Danh mục dùng chung lưu trên Google Sheets, GAS kiểm tra trùng và cấp mã tự động.</p></div>
+        <span class="intro-band-pill">GAS + SHEETS</span>
+      </div>
+      <div class="section-heading"><div><div class="eyebrow">DATA SNAPSHOT</div><h2>Tình trạng danh mục</h2></div><div class="section-note" id="dashboardSource">Đang nạp dữ liệu...</div></div>
+      <div class="stats-grid">
+        <article class="stat-card stat-blue"><span class="stat-icon"><svg class="icon"><use href="#i-box"></use></svg></span><div class="stat-label">Tổng mã vật tư</div><div class="stat-value" id="statTotal">—</div><span class="stat-caption">Material records</span></article>
+        <article class="stat-card stat-teal"><span class="stat-icon"><svg class="icon"><use href="#i-check"></use></svg></span><div class="stat-label">Đang sử dụng</div><div class="stat-value" id="statActive">—</div><span class="stat-caption">Active records</span></article>
+        <article class="stat-card stat-yellow"><span class="stat-icon"><svg class="icon"><use href="#i-pencil"></use></svg></span><div class="stat-label">Mã nháp</div><div class="stat-value" id="statDraft">—</div><span class="stat-caption">Draft records</span></article>
+        <article class="stat-card stat-purple"><span class="stat-icon"><svg class="icon"><use href="#i-clock"></use></svg></span><div class="stat-label">Mã do GAS cấp</div><div class="stat-value" id="statChanges">—</div><span class="stat-caption">Dải A000001 trở đi</span></article>
+      </div>
+      <div class="section-heading"><div><div class="eyebrow">MATERIAL GROUPS</div><h2>Danh mục theo nhóm</h2></div><button class="link-button" type="button" data-navigate="catalog">Xem tất cả <svg class="icon"><use href="#i-arrow"></use></svg></button></div>
+      <div class="group-grid" id="groupCards"></div>
+      <div class="process-card">
+        <div><div class="eyebrow">ERP WORKFLOW</div><h2>Quy trình quản lý mã</h2><p>Tra cứu trước khi tạo · Kiểm tra trùng · Khai báo chuẩn · Kích hoạt · Xuất dữ liệu chủ.</p></div>
+        <button class="button button-outline" type="button" data-navigate="guide">Tìm hiểu quy trình <svg class="icon"><use href="#i-arrow"></use></svg></button>
+      </div>
+    </section>
+
+    <section class="page" data-page="catalog" id="catalog" aria-labelledby="catalogHeading" hidden>
+      <div class="page-header"><div><div class="eyebrow">MATERIAL MASTER / BROWSE</div><h1 id="catalogHeading">Danh mục mã vật tư</h1><p>Tra cứu mã gốc và mã mới. Chọn một dòng để xem thông tin và lịch sử.</p></div><button type="button" class="button button-primary" data-navigate="editor"><svg class="icon"><use href="#i-plus"></use></svg> Tạo mã vật tư</button></div>
+      <div class="panel search-panel">
+        <label class="search-field" for="searchInput"><svg class="icon"><use href="#i-search"></use></svg><input type="search" id="searchInput" placeholder="Tìm mã vật tư, tên, quy cách, tiêu chuẩn..." autocomplete="off"><kbd>/</kbd></label>
+        <div class="filters-row"><label class="field compact-field"><span>Nhóm vật tư</span><select id="filterCategory"><option value="">Tất cả nhóm</option></select></label><label class="field compact-field"><span>Trạng thái</span><select id="filterStatus"><option value="">Tất cả trạng thái</option><option value="active">Đang sử dụng</option><option value="draft">Bản nháp</option><option value="inactive">Ngừng sử dụng</option></select></label><label class="field compact-field"><span>Sắp xếp</span><select id="sortBy"><option value="code">Mã vật tư A–Z</option><option value="name">Tên vật tư A–Z</option><option value="category">Theo nhóm vật tư</option><option value="updated">Cập nhật gần đây</option></select></label><label class="field compact-field page-size-field"><span>Hiển thị</span><select id="pageSize"><option value="10">10 dòng</option><option value="20" selected>20 dòng</option><option value="50">50 dòng</option></select></label></div>
+      </div>
+      <div class="panel table-panel"><div class="table-toolbar"><div><strong id="listCount">— vật tư</strong><span class="subtle" id="listHint">Dữ liệu dùng chung trên Google Sheets</span></div><button type="button" class="button button-outline button-small" id="refreshCloud"><svg class="icon"><use href="#i-refresh"></use></svg> Làm mới</button><button type="button" class="button button-outline button-small" id="catalogExport"><svg class="icon"><use href="#i-download"></use></svg> Xuất JSON</button></div>
+        <div class="table-scroll"><table class="materials-table"><thead><tr><th scope="col">Mã vật tư</th><th scope="col">Tên vật tư / quy cách</th><th scope="col">Nhóm</th><th scope="col">ĐVT</th><th scope="col">Trạng thái</th><th scope="col" class="cell-action">Thao tác</th></tr></thead><tbody id="materialRows"><tr><td colspan="6" class="empty-table">Đang tải dữ liệu...</td></tr></tbody></table></div>
+        <div class="table-footer"><span id="paginationInfo">—</span><div class="pagination"><button class="button button-page" id="prevPage" type="button" aria-label="Trang trước"><svg class="icon"><use href="#i-chevron-left"></use></svg></button><span id="pageLabel">1 / 1</span><button class="button button-page" id="nextPage" type="button" aria-label="Trang tiếp"><svg class="icon"><use href="#i-chevron-right"></use></svg></button></div></div>
+      </div>
+    </section>
+
+    <section class="page" data-page="editor" id="editor" aria-labelledby="editorHeading" hidden>
+      <div class="page-header"><div><div class="eyebrow">MATERIAL MASTER / ATTRIBUTE-DRIVEN CREATION</div><h1 id="editorHeading">Tạo mã vật tư mới</h1><p id="editorLead">Khai báo thuộc tính kỹ thuật; tên và mã vật tư do hệ thống tạo theo quy tắc chuẩn.</p></div><button class="button button-outline" type="button" id="newMaterialButton"><svg class="icon"><use href="#i-refresh"></use></svg> Biểu mẫu mới</button></div>
+      <div class="erp-workflow-strip" aria-label="Các bước tạo mã"><span><b>01</b> Phân loại</span><span><b>02</b> Thuộc tính kỹ thuật</span><span><b>03</b> Kiểm tra trùng</span><span><b>04</b> Cấp mã</span></div>
+      <div id="backendUpgradeNotice" class="backend-upgrade-notice" hidden>
+        <strong>GAS chưa có bộ quy tắc tạo mã theo thuộc tính.</strong> Danh mục vẫn xem được. Để cấp mã mới, chủ bảng cần cập nhật <code>Code.gs</code>, chạy <code>mmSetup()</code> và triển khai <strong>New version</strong>.
+      </div>
+      <div class="editor-layout">
+        <form id="materialForm" class="panel form-panel" novalidate>
+          <div class="form-section-title"><span class="form-step">01</span><div><h2>Phân loại vật tư</h2><p>Chọn nhóm và chủng loại — hệ thống sẽ mở đúng bộ thuộc tính cho vật tư đó.</p></div></div>
+          <div class="form-grid form-grid-erp">
+            <label class="field"><span>Nhóm vật tư <strong class="required">*</strong></span><select id="materialCategory" required></select></label>
+            <label class="field"><span>Chủng loại kỹ thuật <strong class="required">*</strong></span><select id="materialSubtype" required><option value="">Chọn nhóm vật tư trước</option></select></label>
+            <label class="field field-full"><span>Material Type (phân loại ERP)</span><select id="materialType"><option value="ROH">ROH · Nguyên vật liệu</option><option value="HALB">HALB · Bán thành phẩm</option><option value="HIBE">HIBE · Vật tư phụ / tiêu hao</option></select><small>Phân loại nghiệp vụ, không quyết định hai vật tư có trùng thuộc tính kỹ thuật hay không.</small></label>
+          </div>
+          <div class="form-section-title section-spaced"><span class="form-step">02</span><div><h2>Thuộc tính kỹ thuật</h2><p id="attributeSectionHint">Các trường sẽ xuất hiện sau khi chọn chủng loại vật tư.</p></div></div>
+          <div class="attribute-progress"><span id="attributeProgress">0 / 0 trường bắt buộc</span><div class="progress-track"><i id="attributeProgressFill"></i></div></div>
+          <div class="attribute-grid" id="dynamicTechnicalFields"><div class="attribute-empty"><svg class="icon"><use href="#i-box"></use></svg><strong>Biểu mẫu thông minh</strong><span>Chọn nhóm và chủng loại vật tư để hiện các thông số kỹ thuật phù hợp.</span></div></div>
+          <div class="generated-erp-card"><div class="generated-erp-header"><span class="generated-magic-icon">✦</span><div><strong>Tên vật tư tự động</strong><small>Được chuẩn hóa từ các thuộc tính đã khai báo · Không cho nhập tay</small></div><span class="helper-tag">AUTO DESCRIPTION</span></div>
+            <label class="field field-full"><span>Tên vật tư chính thức — chỉ đọc</span><textarea id="materialName" rows="2" maxlength="160" readonly placeholder="Tên sẽ được tự động hình thành trong lúc nhập thông số..."></textarea></label>
+            <div class="derived-row"><label class="field"><span>Đơn vị tính cơ sở</span><input id="materialUnit" readonly placeholder="Theo chủng loại"></label><label class="field"><span>Mác / chủng loại</span><input id="materialGrade" readonly placeholder="Tự tổng hợp"></label><label class="field"><span>Tiêu chuẩn</span><input id="materialStandard" readonly placeholder="Theo khai báo"></label><label class="field"><span>Kích thước / quy cách</span><input id="materialDimensions" readonly placeholder="Theo khai báo"></label></div>
+            <label class="field field-full generated-tech-details"><span>Đặc tính kỹ thuật đã chuẩn hóa</span><textarea id="materialSpec" rows="2" readonly placeholder="Tự tạo từ các thông số kỹ thuật"></textarea></label>
+          </div>
+          <div class="form-section-title section-spaced"><span class="form-step">03</span><div><h2>Cấp mã sau khi kiểm tra trùng</h2><p>Mã chỉ được GAS cấp khi không có vật tư trùng nhận dạng trên Google Sheets.</p></div></div>
+          <div class="code-generator"><div class="code-generator-top"><strong>Dải số cấp tự động</strong><span class="helper-tag">ERP · SERVER NUMBER RANGE</span></div><label class="field"><span>Mã vật tư — chỉ đọc</span><input id="materialCode" type="text" maxlength="32" readonly autocomplete="off" spellcheck="false" placeholder="GAS cấp mã khi lưu thành công"><small id="codeHint">Server cấp mã A000001, A000002...; người dùng không được chọn hoặc sửa mã.</small></label></div>
+          <div class="barcode-preview-panel" aria-labelledby="barcodePreviewTitle"><div class="barcode-preview-heading"><div><span class="barcode-eyebrow">CODE 128 · NHÃN VẬT TƯ</span><h3 id="barcodePreviewTitle">Mã vạch vật tư</h3></div><span class="barcode-preview-pill">TỪ MÃ CHÍNH THỨC</span></div><div class="barcode-preview-surface"><div class="barcode-bars" id="editorBarcodeVisual"><span class="barcode-placeholder">Barcode xuất hiện sau khi mã được GAS cấp.</span></div><strong class="barcode-human" id="editorBarcodeCode">—</strong></div><div class="barcode-preview-footer"><small id="editorBarcodeHint">Chỉ in nhãn sau khi tạo mã thành công trên Google Sheets.</small><button class="button button-outline button-small" type="button" id="editorPrintBarcode" disabled><svg class="icon"><use href="#i-printer"></use></svg> In nhãn</button></div></div>
+          <div class="form-grid actor-form-grid"><label class="field field-full"><span>Ghi chú bổ sung (không dùng kiểm tra trùng)</span><textarea id="materialNotes" maxlength="500" rows="2" placeholder="Ghi chú riêng cho vật tư; không ảnh hưởng đến tên và mã định danh."></textarea></label><label class="field field-full" for="materialActorName"><span>Người nhập (tự khai, không xác minh)</span><input id="materialActorName" type="text" maxlength="64" autocomplete="off" placeholder="VD: Học viên 01 / Tổ kỹ thuật"><small>Chỉ ghi chú người tạo cho bài đào tạo; không phải tài khoản đã xác thực.</small></label></div>
+          <div class="form-footer"><span class="form-disclaimer"><svg class="icon"><use href="#i-info"></use></svg> Hệ thống kiểm tra lại trên GAS trước khi cấp mã. Không có bước phê duyệt.</span><div class="form-buttons"><button class="button button-primary" type="submit" id="saveActive" disabled><svg class="icon"><use href="#i-check"></use></svg> Lưu & cấp mã</button></div></div>
+        </form>
+        <aside class="editor-sidebar"><div class="panel helper-panel erp-check-panel"><div class="helper-panel-heading"><svg class="icon"><use href="#i-shield"></use></svg><h3>Đối chiếu Material Master</h3></div><p>Đối chiếu nhiều trường kỹ thuật với danh mục dùng chung, giống Filter Excel nhưng tự động ngay khi nhập.</p><div id="duplicateStatus" class="duplicate-status status-idle" role="status"><strong>Chưa đủ thuộc tính để đối chiếu</strong><span>Hoàn thành các trường nhận dạng để hệ thống tìm mã trùng.</span></div><div id="duplicateSuggestions" class="suggestions"><div class="suggestion-empty">Danh sách mã trùng hoặc gần giống sẽ hiện tại đây.</div></div><div class="duplicate-check-footer"><svg class="icon"><use href="#i-refresh"></use></svg><span>So sánh trên danh mục đã tải. GAS xác nhận lại ở thời điểm Lưu.</span></div></div>
+          <div class="sidebar-art"><img src="./assets/images/material-master-catalog.webp" alt="Hệ dữ liệu chủ vật tư liên kết mua hàng, sản xuất và chất lượng" loading="lazy"><div><strong>Một mã · Nhiều phân hệ</strong><span>Single source of reference</span></div></div>
+          <div class="panel best-practice"><div class="eyebrow">ERP MASTER DATA QUALITY</div><h3>Quy tắc chất lượng dữ liệu</h3><ul><li>Không đặt tên vật tư bằng tay</li><li>Chuẩn hóa số đo về mm</li><li>Không cấp lại mã trùng đặc tính</li><li>Chỉ GAS cấp mã chính thức</li></ul></div></aside>
+      </div>
+    </section>
+
+    <section class="page" data-page="data" id="data" aria-labelledby="dataHeading" hidden>
+      <div class="page-header"><div><div class="eyebrow">MATERIAL MASTER / DATA CONTROL</div><h1 id="dataHeading">Quản trị dữ liệu</h1><p>Dữ liệu vật tư lưu tập trung trên Google Sheets; JSON chỉ giữ danh mục cấu hình.</p></div><span class="environment-tag"><span class="live-pulse"></span> CLOUD DATA</span></div>
+      <div class="data-grid">
+        <div class="panel data-card"><div class="data-card-icon blue-icon"><svg class="icon"><use href="#i-database"></use></svg></div><h2>Nguồn dữ liệu chính thức</h2><dl class="metadata-list"><div><dt>Nguồn dữ liệu</dt><dd id="sourceType">—</dd></div><div><dt>Cấu hình</dt><dd id="sourceVersion">—</dd></div><div><dt>Tổng mã</dt><dd id="sourceTotal">—</dd></div><div><dt>Mã do hệ thống cấp</dt><dd id="sourceChanges">—</dd></div><div><dt>Nạp gần nhất</dt><dd id="sourceUpdated">—</dd></div></dl></div>
+        <div class="panel data-card"><div class="data-card-icon purple-icon"><svg class="icon"><use href="#i-download"></use></svg></div><h2>Sao lưu danh mục</h2><p>Xuất bản sao JSON của danh mục đang được tải từ Google Sheets. Xuất không sửa dữ liệu; không có thao tác nhập hoặc khôi phục hàng loạt qua giao diện.</p><div class="stack-buttons"><button class="button button-primary" type="button" id="exportFull"><svg class="icon"><use href="#i-download"></use></svg> Xuất JSON (chỉ đọc)</button></div></div>
+        <div class="panel data-card"><div class="data-card-icon orange-icon"><svg class="icon"><use href="#i-refresh"></use></svg></div><h2>Database dùng chung</h2><p>GAS cấp mã tự động A000001, A000002... Người dùng không được đặt hoặc sửa mã. Mọi thao tác tạo mới được kiểm tra trên server và ghi nhật ký.</p><a class="button button-outline" id="masterSheetLink" href="#" target="_blank" rel="noopener noreferrer" hidden>Mở Google Sheets (theo quyền Drive)</a></div>
+      </div>
+      <div class="notice notice-info"><svg class="icon"><use href="#i-info"></use></svg><div><strong>Google Sheets là nguồn dữ liệu duy nhất</strong><p>JSON chỉ chứa danh mục tĩnh như nhóm vật tư, đơn vị tính và thông số giao diện. Không ghi mã mới vào LocalStorage, không tự đồng bộ ngược từ file JSON. Nhật ký chỉ được quản lý trên Google Sheets bởi chủ dữ liệu.</p></div></div>
+      <div class="panel history-panel"><div class="panel-heading"><div><div class="eyebrow">CHANGE HISTORY</div><h2>Nhật ký thao tác trên GAS</h2></div><span class="helper-tag">SERVER AUDIT LOG · ADMIN</span></div><div id="auditEntries" class="audit-list"><p class="subtle">Chưa có thao tác nào.</p></div></div>
+    </section>
+
+    <section class="page" data-page="guide" id="guide" aria-labelledby="guideHeading" hidden>
+      <div class="page-header"><div><div class="eyebrow">LEARNING / ERP WORKFLOW</div><h1 id="guideHeading">Material Master trong ERP</h1><p>Một bài thực hành có nghiệp vụ thực tế, nhưng đủ gọn để học theo từng bước.</p></div><button class="button button-primary" type="button" data-navigate="editor">Thực hành tạo mã <svg class="icon"><use href="#i-arrow"></use></svg></button></div>
+      <div class="guide-hero"><img src="./assets/images/material-master-footer.webp" alt="Trung tâm dữ liệu chủ liên kết thép, cao su, tấm trượt và bu lông" loading="lazy"><div><strong>MATERIAL MASTER DATA MANAGEMENT</strong><span>Một nền tảng tham chiếu cho nhiều quy trình ERP.</span></div></div>
+      <div class="guide-grid"><article class="panel guide-card"><span class="form-step">01</span><h2>Search before Create</h2><p>Tra cứu mã vật tư đang tồn tại. Không sinh mã mới khi vật tư tương đương đã được khai báo đầy đủ.</p></article><article class="panel guide-card"><span class="form-step">02</span><h2>Maintain Master Data</h2><p>Nhập nhóm, tên, đơn vị tính và quy cách; không nhập mã vật tư.</p></article><article class="panel guide-card"><span class="form-step">03</span><h2>Validate & Activate</h2><p>GAS kiểm tra trùng dưới khóa giao dịch, cấp mã mới và kích hoạt ngay.</p></article><article class="panel guide-card"><span class="form-step">04</span><h2>Lifecycle Control</h2><p>Giữ ổn định định danh đã phát hành. Mã không còn dùng được chuyển trạng thái, không xóa lịch sử.</p></article><article class="panel guide-card"><span class="form-step">05</span><h2>Publish Master Data</h2><p>Google Sheets lưu danh mục chính thức; các phần mềm khác tham chiếu theo quyền được cấp.</p></article><article class="panel guide-card"><span class="form-step">06</span><h2>ERP Data Stewardship</h2><p>Phân biệt dữ liệu chủ vật tư với giao dịch nhập, xuất, tồn. Không có bước phê duyệt; quyền tạo/sửa mã được kiểm tra tại GAS.</p></article></div>
+      <div class="notice notice-info"><svg class="icon"><use href="#i-info"></use></svg><div><strong>Phân biệt Material Group và Material Type</strong><p>Thép / Cao su / Tấm trượt / Bu lông là nhóm vật tư. ROH / HALB / HIBE là loại vật tư theo nghiệp vụ. Dữ liệu từ báo cáo tồn kho không tự suy ra đúng loại vật tư; trường này được để trống cho học viên phân loại.</p></div></div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="content-width"><div class="footer-banner"><img src="./assets/images/material-master-footer.webp" alt="Bốn nhóm vật tư kết nối với dữ liệu chủ" loading="lazy"><div class="footer-banner-gradient"></div><div class="footer-banner-content"><span>BUILT FOR BETTER DATA</span><strong>Make every material count.</strong><p>Quản trị mã vật tư minh bạch, nhất quán và sẵn sàng tham chiếu.</p></div></div><div class="footer-bottom"><span class="footer-brand">Epsilon<span>.</span>Blue Soft <small>· Material Master</small></span><span>ERP training · GAS + Google Sheets · Không dữ liệu tồn kho</span><span id="footerYear">2026</span></div></div></footer>
+
+  <section id="authScreen" class="auth-screen" aria-labelledby="connectingHeading">
+    <div class="auth-card">
+      <div class="auth-mark"><svg class="icon"><use href="#i-database"></use></svg></div>
+      <span class="auth-kicker">EPSILON.BLUE SOFT · MATERIAL MASTER</span>
+      <h2 id="connectingHeading">Đang kết nối dữ liệu...</h2>
+      <p>Chế độ đào tạo trực tiếp. Không cần đăng nhập.</p>
+      <div id="bridgeStatus" class="auth-connection" role="status">Đang kiểm tra Google Apps Script...</div>
+      <p id="connectionError" class="auth-error" role="alert" hidden></p>
+      <button id="retryConnection" type="button" class="button button-primary auth-submit" hidden>Thử kết nối lại</button>
+      <p class="auth-footnote">Danh mục dùng chung trên Google Sheets. Chỉ tạo mã mới; không chỉnh sửa mã cũ qua Web App.</p>
+    </div>
+  </section>
+
+  <dialog id="detailDialog" class="modal-dialog" aria-labelledby="detailTitle"><div class="modal-header"><div><div class="eyebrow">MATERIAL MASTER / DISPLAY</div><h2 id="detailTitle">Chi tiết vật tư</h2></div><button type="button" class="icon-button" id="closeDetail" aria-label="Đóng"><svg class="icon"><use href="#i-x"></use></svg></button></div><div class="modal-body" id="detailBody"></div><div class="modal-actions"><button class="button button-outline" type="button" id="detailDownloadBarcode"><svg class="icon"><use href="#i-download"></use></svg> Tải barcode SVG</button><button class="button button-accent" type="button" id="detailPrintBarcode"><svg class="icon"><use href="#i-printer"></use></svg> In nhãn</button><button class="button button-outline" type="button" id="detailStatusButton">Chuyển trạng thái</button><button class="button button-primary" type="button" id="detailEditButton"><svg class="icon"><use href="#i-pencil"></use></svg> Sửa thông tin</button></div></dialog>
+  <dialog id="confirmDialog" class="modal-dialog confirm-dialog" aria-labelledby="confirmTitle"><div class="confirm-symbol"><svg class="icon"><use href="#i-alert"></use></svg></div><h2 id="confirmTitle">Xác nhận thao tác</h2><p id="confirmMessage"></p><div class="modal-actions"><button class="button button-outline" id="confirmCancel" type="button">Hủy bỏ</button><button class="button button-primary" id="confirmYes" type="button">Xác nhận</button></div></dialog>
+  <div id="barcodePrintArea" hidden aria-hidden="true"></div>
+  <div id="toastStack" class="toast-stack" aria-live="polite" aria-atomic="false"></div>
+
+  <svg xmlns="http://www.w3.org/2000/svg" class="svg-sprite" aria-hidden="true"><defs>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-plus-square" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 7v10M7 12h10"/></symbol>
+    <symbol id="i-layout" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="8" rx="1"/><rect x="14" y="3" width="7" height="8" rx="1"/><rect x="3" y="15" width="18" height="6" rx="1"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h12M9 12h12M9 18h12"/><path d="M4 6h.01M4 12h.01M4 18h.01" stroke-width="3"/></symbol>
+    <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19V5a2 2 0 0 1 2-2h14v18H6a2 2 0 0 1-2-2Zm0 0a2 2 0 0 1 2-2h14"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="m12 2 9 5-9 5-9-5 9-5ZM3 7v10l9 5 9-5V7M12 12v10"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24"><path d="m14 4 6 6M3 21l4-1 13-13a3 3 0 0 0-4-4L3 16v5Z"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="m12 2 9 4v6c0 5-4 9-9 10-5-1-9-5-9-10V6l9-4Z"/><path d="m8 12 3 3 5-6"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 17v4h16v-4"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 17V5m-5 5 5-5 5 5M4 17v4h16v-4"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 6v6h-6M4 18v-6h6"/><path d="M5 9a8 8 0 0 1 14-3l1 6M4 12l1 6a8 8 0 0 0 14-3"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-save" viewBox="0 0 24 24"><path d="M4 3h13l3 3v15H4V3Zm3 0v7h9V3M7 21v-8h10v8"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7v.2"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M5 5 19 19M19 5 5 19"/></symbol>
+    <symbol id="i-printer" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v7H6zM18 12h.01"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10 4 2 18a2 2 0 0 0 2 3h16a2 2 0 0 0 2-3L14 4a2 2 0 0 0-4 0ZM12 9v5M12 18h.01"/></symbol>
+  </defs></svg>
+</body>
+</html>

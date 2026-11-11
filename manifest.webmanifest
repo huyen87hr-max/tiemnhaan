@@ -1,0 +1,16 @@
+{
+  "name": "Material Master | Epsilon.Blue Soft",
+  "short_name": "Material Master",
+  "description": "Quản lý dữ liệu chủ vật tư theo tư duy ERP. Phiên bản đào tạo dùng chung Google Sheets và Google Apps Script.",
+  "lang": "vi",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f7ff",
+  "theme_color": "#1635a8",
+  "icons": [
+    {"src": "./icon-152.png", "sizes": "152x152", "type": "image/png"},
+    {"src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+    {"src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}

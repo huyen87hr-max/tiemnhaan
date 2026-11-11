@@ -1,0 +1,751 @@
+{
+  "schemaVersion": "3.0",
+  "dataset": "material-master-config",
+  "datasetVersion": "2026-11-10-erp-attributes",
+  "description": "Only public configuration: groups, units and field choices. No material records.",
+  "categories": [
+    {
+      "id": "THEP",
+      "name": "Thép",
+      "description": "Thép tấm, thép hình, thép ống, thép tròn"
+    },
+    {
+      "id": "CAO_SU",
+      "name": "Cao su",
+      "description": "Cao su NR, EPDM, CR và chi tiết cao su"
+    },
+    {
+      "id": "TAM_TRUOT",
+      "name": "Tấm trượt",
+      "description": "Tấm trượt PTFE, UHMWPE"
+    },
+    {
+      "id": "BU_LONG",
+      "name": "Bu lông",
+      "description": "Bu lông và liên kết ren"
+    }
+  ],
+  "units": [
+    "Tấm",
+    "Bộ",
+    "Cái",
+    "Chiếc",
+    "Mét",
+    "Cây",
+    "Cuộn",
+    "Thanh",
+    "Kg",
+    "Viên",
+    "Ống"
+  ],
+  "materialTypes": [
+    {
+      "id": "ROH",
+      "name": "Nguyên vật liệu"
+    },
+    {
+      "id": "HALB",
+      "name": "Bán thành phẩm"
+    },
+    {
+      "id": "HIBE",
+      "name": "Vật tư phụ / tiêu hao"
+    }
+  ],
+  "codeSeries": {
+    "prefix": "A",
+    "digits": 6,
+    "issuedBy": "GAS",
+    "manualInput": false
+  },
+  "erpFormVersion": "erp-attribute-v1",
+  "formSchemas": {
+    "THEP": [
+      {
+        "id": "STEEL_PLATE",
+        "label": "Thép tấm",
+        "unit": "Tấm",
+        "defaultMaterialType": "ROH",
+        "hint": "Thép tấm: mác + chiều dày × rộng × dài",
+        "fields": [
+          {
+            "id": "grade",
+            "label": "Mác thép",
+            "kind": "suggest",
+            "required": true,
+            "identity": true,
+            "options": [
+              "SS400",
+              "S355",
+              "S355J2+N",
+              "A36",
+              "A572",
+              "Q355",
+              "Q235B",
+              "S45C",
+              "CB240",
+              "CB400",
+              "CB500"
+            ]
+          },
+          {
+            "id": "standard",
+            "label": "Tiêu chuẩn",
+            "kind": "suggest",
+            "required": false,
+            "identity": true,
+            "options": [
+              "JIS G 3101",
+              "EN 10025-2",
+              "ASTM A36",
+              "ASTM A572",
+              "ASTM A668",
+              "ISO 4017",
+              "ISO 4762",
+              "DIN 933",
+              "DIN 912"
+            ]
+          },
+          {
+            "id": "thickness",
+            "label": "Chiều dày t",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          },
+          {
+            "id": "width",
+            "label": "Chiều rộng W",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          },
+          {
+            "id": "length",
+            "label": "Chiều dài L",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          }
+        ]
+      },
+      {
+        "id": "STEEL_ROUND",
+        "label": "Thép tròn đặc",
+        "unit": "Thanh",
+        "defaultMaterialType": "ROH",
+        "hint": "Thép tròn: đường kính và chiều dài",
+        "fields": [
+          {
+            "id": "grade",
+            "label": "Mác thép",
+            "kind": "suggest",
+            "required": true,
+            "identity": true,
+            "options": [
+              "SS400",
+              "S355",
+              "S355J2+N",
+              "A36",
+              "A572",
+              "Q355",
+              "Q235B",
+              "S45C",
+              "CB240",
+              "CB400",
+              "CB500"
+            ]
+          },
+          {
+            "id": "standard",
+            "label": "Tiêu chuẩn",
+            "kind": "suggest",
+            "required": false,
+            "identity": true,
+            "options": [
+              "JIS G 3101",
+              "EN 10025-2",
+              "ASTM A36",
+              "ASTM A572",
+              "ASTM A668",
+              "ISO 4017",
+              "ISO 4762",
+              "DIN 933",
+              "DIN 912"
+            ]
+          },
+          {
+            "id": "diameter",
+            "label": "Đường kính D",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          },
+          {
+            "id": "length",
+            "label": "Chiều dài L",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          }
+        ]
+      },
+      {
+        "id": "STEEL_TUBE",
+        "label": "Thép ống",
+        "unit": "Thanh",
+        "defaultMaterialType": "ROH",
+        "hint": "",
+        "fields": [
+          {
+            "id": "grade",
+            "label": "Mác thép",
+            "kind": "suggest",
+            "required": true,
+            "identity": true,
+            "options": [
+              "SS400",
+              "S355",
+              "S355J2+N",
+              "A36",
+              "A572",
+              "Q355",
+              "Q235B",
+              "S45C",
+              "CB240",
+              "CB400",
+              "CB500"
+            ]
+          },
+          {
+            "id": "standard",
+            "label": "Tiêu chuẩn",
+            "kind": "suggest",
+            "required": false,
+            "identity": true,
+            "options": [
+              "JIS G 3101",
+              "EN 10025-2",
+              "ASTM A36",
+              "ASTM A572",
+              "ASTM A668",
+              "ISO 4017",
+              "ISO 4762",
+              "DIN 933",
+              "DIN 912"
+            ]
+          },
+          {
+            "id": "outerDiameter",
+            "label": "Đường kính ngoài D",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          },
+          {
+            "id": "wall",
+            "label": "Chiều dày thành ống",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          },
+          {
+            "id": "length",
+            "label": "Chiều dài L",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          }
+        ]
+      },
+      {
+        "id": "STEEL_SECTION",
+        "label": "Thép hình",
+        "unit": "Thanh",
+        "defaultMaterialType": "ROH",
+        "hint": "",
+        "fields": [
+          {
+            "id": "profile",
+            "label": "Loại tiết diện",
+            "kind": "select",
+            "required": true,
+            "identity": true,
+            "options": [
+              "H",
+              "I",
+              "U",
+              "V",
+              "L",
+              "C"
+            ]
+          },
+          {
+            "id": "size",
+            "label": "Quy cách tiết diện",
+            "kind": "text",
+            "required": true,
+            "identity": true,
+            "hint": "Ví dụ H200x200x8x12"
+          },
+          {
+            "id": "grade",
+            "label": "Mác thép",
+            "kind": "suggest",
+            "required": true,
+            "identity": true,
+            "options": [
+              "SS400",
+              "S355",
+              "S355J2+N",
+              "A36",
+              "A572",
+              "Q355",
+              "Q235B",
+              "S45C",
+              "CB240",
+              "CB400",
+              "CB500"
+            ]
+          },
+          {
+            "id": "standard",
+            "label": "Tiêu chuẩn",
+            "kind": "suggest",
+            "required": false,
+            "identity": true,
+            "options": [
+              "JIS G 3101",
+              "EN 10025-2",
+              "ASTM A36",
+              "ASTM A572",
+              "ASTM A668",
+              "ISO 4017",
+              "ISO 4762",
+              "DIN 933",
+              "DIN 912"
+            ]
+          },
+          {
+            "id": "length",
+            "label": "Chiều dài L",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          }
+        ]
+      }
+    ],
+    "CAO_SU": [
+      {
+        "id": "RUBBER_SHEET",
+        "label": "Cao su tấm",
+        "unit": "Tấm",
+        "defaultMaterialType": "ROH",
+        "hint": "",
+        "fields": [
+          {
+            "id": "compound",
+            "label": "Chủng loại cao su",
+            "kind": "select",
+            "required": true,
+            "identity": true,
+            "options": [
+              "NR",
+              "EPDM",
+              "CR",
+              "Silicone"
+            ]
+          },
+          {
+            "id": "hardness",
+            "label": "Độ cứng Shore A",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "Shore A"
+          },
+          {
+            "id": "thickness",
+            "label": "Chiều dày t",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          },
+          {
+            "id": "width",
+            "label": "Chiều rộng W",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          },
+          {
+            "id": "length",
+            "label": "Chiều dài L",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          }
+        ]
+      },
+      {
+        "id": "RUBBER_PAD",
+        "label": "Đệm cao su",
+        "unit": "Cái",
+        "defaultMaterialType": "ROH",
+        "hint": "",
+        "fields": [
+          {
+            "id": "compound",
+            "label": "Chủng loại cao su",
+            "kind": "select",
+            "required": true,
+            "identity": true,
+            "options": [
+              "NR",
+              "EPDM",
+              "CR",
+              "Silicone"
+            ]
+          },
+          {
+            "id": "hardness",
+            "label": "Độ cứng Shore A",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "Shore A"
+          },
+          {
+            "id": "width",
+            "label": "Chiều rộng W",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          },
+          {
+            "id": "length",
+            "label": "Chiều dài L",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          },
+          {
+            "id": "thickness",
+            "label": "Chiều dày t",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          }
+        ]
+      },
+      {
+        "id": "RUBBER_RING",
+        "label": "Vòng cao su",
+        "unit": "Cái",
+        "defaultMaterialType": "ROH",
+        "hint": "",
+        "fields": [
+          {
+            "id": "compound",
+            "label": "Chủng loại cao su",
+            "kind": "select",
+            "required": true,
+            "identity": true,
+            "options": [
+              "NR",
+              "EPDM",
+              "CR",
+              "Silicone"
+            ]
+          },
+          {
+            "id": "hardness",
+            "label": "Độ cứng Shore A",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "Shore A"
+          },
+          {
+            "id": "outerDiameter",
+            "label": "Đường kính ngoài D",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          },
+          {
+            "id": "innerDiameter",
+            "label": "Đường kính trong d",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          },
+          {
+            "id": "thickness",
+            "label": "Chiều dày t",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          }
+        ]
+      }
+    ],
+    "TAM_TRUOT": [
+      {
+        "id": "SLIDE_PLATE",
+        "label": "Tấm trượt chữ nhật",
+        "unit": "Tấm",
+        "defaultMaterialType": "ROH",
+        "hint": "",
+        "fields": [
+          {
+            "id": "compound",
+            "label": "Vật liệu tấm trượt",
+            "kind": "select",
+            "required": true,
+            "identity": true,
+            "options": [
+              "PTFE",
+              "M-PTFE",
+              "UHMWPE"
+            ]
+          },
+          {
+            "id": "thickness",
+            "label": "Chiều dày t",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          },
+          {
+            "id": "width",
+            "label": "Chiều rộng W",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          },
+          {
+            "id": "length",
+            "label": "Chiều dài L",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          },
+          {
+            "id": "surface",
+            "label": "Bề mặt",
+            "kind": "select",
+            "required": true,
+            "identity": true,
+            "options": [
+              "Trơn",
+              "Có rãnh",
+              "Có lỗ"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "SLIDE_DISC",
+        "label": "Đĩa trượt tròn",
+        "unit": "Cái",
+        "defaultMaterialType": "ROH",
+        "hint": "",
+        "fields": [
+          {
+            "id": "compound",
+            "label": "Vật liệu tấm trượt",
+            "kind": "select",
+            "required": true,
+            "identity": true,
+            "options": [
+              "PTFE",
+              "M-PTFE",
+              "UHMWPE"
+            ]
+          },
+          {
+            "id": "diameter",
+            "label": "Đường kính D",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          },
+          {
+            "id": "thickness",
+            "label": "Chiều dày t",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          },
+          {
+            "id": "surface",
+            "label": "Bề mặt",
+            "kind": "select",
+            "required": true,
+            "identity": true,
+            "options": [
+              "Trơn",
+              "Có rãnh",
+              "Có lỗ"
+            ]
+          }
+        ]
+      }
+    ],
+    "BU_LONG": [
+      {
+        "id": "HEX_BOLT",
+        "label": "Bu lông lục giác ngoài",
+        "unit": "Cái",
+        "defaultMaterialType": "HIBE",
+        "hint": "",
+        "fields": [
+          {
+            "id": "standard",
+            "label": "Tiêu chuẩn",
+            "kind": "select",
+            "required": true,
+            "identity": true,
+            "options": [
+              "ISO 4017",
+              "ISO 4014",
+              "DIN 933",
+              "DIN 931"
+            ]
+          },
+          {
+            "id": "strength",
+            "label": "Cấp bền",
+            "kind": "select",
+            "required": true,
+            "identity": true,
+            "options": [
+              "4.6",
+              "5.6",
+              "8.8",
+              "10.9",
+              "12.9",
+              "A2-70"
+            ]
+          },
+          {
+            "id": "diameter",
+            "label": "Đường kính ren M",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          },
+          {
+            "id": "length",
+            "label": "Chiều dài L",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          },
+          {
+            "id": "finish",
+            "label": "Lớp phủ / bề mặt",
+            "kind": "select",
+            "required": true,
+            "identity": true,
+            "options": [
+              "Không mạ",
+              "Mạ kẽm điện phân",
+              "Mạ kẽm nhúng nóng",
+              "Inox"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "SOCKET_BOLT",
+        "label": "Bu lông lục giác chìm",
+        "unit": "Cái",
+        "defaultMaterialType": "HIBE",
+        "hint": "",
+        "fields": [
+          {
+            "id": "standard",
+            "label": "Tiêu chuẩn",
+            "kind": "select",
+            "required": true,
+            "identity": true,
+            "options": [
+              "ISO 4762",
+              "DIN 912"
+            ]
+          },
+          {
+            "id": "strength",
+            "label": "Cấp bền",
+            "kind": "select",
+            "required": true,
+            "identity": true,
+            "options": [
+              "8.8",
+              "10.9",
+              "12.9",
+              "A2-70"
+            ]
+          },
+          {
+            "id": "diameter",
+            "label": "Đường kính ren M",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          },
+          {
+            "id": "length",
+            "label": "Chiều dài L",
+            "kind": "number",
+            "required": true,
+            "identity": true,
+            "unit": "mm"
+          },
+          {
+            "id": "finish",
+            "label": "Lớp phủ / bề mặt",
+            "kind": "select",
+            "required": true,
+            "identity": true,
+            "options": [
+              "Không mạ",
+              "Mạ kẽm điện phân",
+              "Mạ kẽm nhúng nóng",
+              "Inox"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
